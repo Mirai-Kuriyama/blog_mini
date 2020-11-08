@@ -1,17 +1,20 @@
 <template>
-	<view class="article-detail">
+	<view class="article-detail u-skeleton">
 		<view class="header">
-			<view class="title">{{ info.title || '未知标题' }}</view>
+			<view class="title u-skeleton-rect">{{ info.title || '未知标题' }}</view>
 			<view class="info">
-				<view class="time">{{ date || '请求中...' }}</view>
+				<view class="time u-skeleton-rect">{{ date || '请求中...' }}</view>
 				<!-- <view class="view-num">
 					50682 阅读
 				</view> -->
 			</view>
 		</view>
-
-		<view class="ctt"><jyf-parser selectable show-with-animation autosetTitle autoscroll :html="info.content" ref="article"></jyf-parser></view>
-
+		<u-skeleton :loading="loading" :animation="true"></u-skeleton>
+		<view class="ctt">
+			<view class="u-skeleton-rect">
+				<jyf-parser selectable show-with-animation autosetTitle autoscroll :html="info.content" ref="article"></jyf-parser>
+			</view>
+		</view>
 		<tui-fab :bgColor="bgColor" :btnList="btnList" @click="onClick"></tui-fab>
 	</view>
 </template>
@@ -39,7 +42,8 @@ export default {
 			// 				html:`<p>这里是内容</p><p><br></p>
 			// <video src="BV1KJ411C72x"></video>`
 			html: '<p>请求中...</p>',
-			info: {},
+			loading:true,
+			info: {content:""},
 			bgColor: '#5677fc',
 			btnList: [
 				{
@@ -90,10 +94,16 @@ export default {
 				uni.navigateBack();
 			}, 800);
 		}
+		uni.$on("refresh", this.getData)
+	},
+	beforeDestroy() {
+		uni.$off("refresh", this.getData)
 	},
 	methods: {
 		getData() {
+			this.loading = true
 			this.$request('/api/article/detail/' + this.id, {}, 'get').then(res => {
+				this.loading = false
 				if (res.msg == 'ok') {
 					this.info = res.data;
 					this.toggle(res.data.is_collect == 1);
@@ -136,6 +146,11 @@ export default {
 		}
 	},
 	onShareAppMessage() {
+		// #ifdef MP-QQ
+			uni.showShareMenu({
+				showShareItems:['qq', 'qzone', 'wechatFriends', 'wechatMoment']
+			})
+		// #endif
 		return {
 			title: this.info.title,
 			path: '/pages/article/article_detail?id=' + this.info.id,
@@ -146,8 +161,14 @@ export default {
 </script>
 
 <style lang="less">
-.article-detail {
+page {
 	background-color: #fff;
+}
+.article-detail {
+	height: 100vh;
+	
+	display: flex;
+	flex-direction: column;
 	.header {
 		padding: 30upx;
 
@@ -155,7 +176,7 @@ export default {
 			font-size: 38upx;
 			color: #333;
 			font-weight: bold;
-			padding-bottom: 20upx;
+			margin-bottom: 20upx;
 		}
 		.info {
 			display: flex;
@@ -166,8 +187,13 @@ export default {
 		}
 	}
 	.ctt {
+		flex: 1;
 		padding: 0 30upx;
 		padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+		>view {
+			width: 100%;
+			height: 100%;
+		}
 	}
 	& /deep/ .interlayer {
 		overflow-x: hidden;

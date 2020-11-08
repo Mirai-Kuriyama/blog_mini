@@ -1,8 +1,0 @@
-{
-  "disableScroll": true,
-  "usingComponents": {
-    "mescroll-uni": "/components/mescroll-uni/mescroll-uni",
-    "card-article": "/pages/components/card_article",
-    "tui-fab": "/components/tui-fab/tui-fab"
-  }
-}

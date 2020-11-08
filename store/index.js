@@ -47,7 +47,7 @@ async function login(commit,data) {
 				if(data) {
 					send_data.info = data
 				}
-				let result = await request("/api/wxlogin",send_data)
+				let result = await request("/api/wxlogin",send_data,"post",false)
 				if(result.msg=="ok" && result.data.token) {
 					commit("setUserInfo",result.data)
 					uni.setStorageSync("user_info",result.data)

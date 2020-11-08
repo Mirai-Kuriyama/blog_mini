@@ -36,7 +36,7 @@
 				this.getCats()
 			},
 			getCats() {
-				this.$request("/api/category/wxget",{},"get").then(res=>{
+				this.$request("/api/category/wxget",{},"get",false).then(res=>{
 					if(res.msg == "ok") {
 						this.list = res.data
 					}

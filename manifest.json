@@ -74,5 +74,11 @@
     },
     "uniStatistics" : {
         "enable" : false
+    },
+    "mp-qq" : {
+        "appid" : "1111084753",
+        "setting" : {
+            "urlCheck" : false
+        }
     }
 }

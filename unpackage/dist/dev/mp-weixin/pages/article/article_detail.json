@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "jyf-parser": "/components/jyf-parser/jyf-parser",
-    "tui-fab": "/components/tui-fab/tui-fab"
-  }
-}

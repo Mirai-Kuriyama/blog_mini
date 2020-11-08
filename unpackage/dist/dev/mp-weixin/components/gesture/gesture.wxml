@@ -1,1 +1,0 @@
-<view data-event-opts="{{[['touchstart',[['touchStart',['$event']]]],['touchmove',[['touchMove',['$event']]]],['touchend',[['touchEnd',['$event']]]]]}}" class="gesture data-v-7a6a8898" bindtouchstart="__e" bindtouchmove="__e" bindtouchend="__e"><slot></slot></view>

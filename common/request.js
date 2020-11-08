@@ -3,7 +3,20 @@ import {
 } from "@/common/url_config.js"
 import store from '@/store/index.js'
 let flag = 0
-export function request(url, params = {}, methods = "post", showLoading = true, is_form_params = false) {
+export function request(url, params, methods = "post", showLoading = true, is_form_params = false) {
+	params.env = uni.getStorageSync("system_info")||""
+	// #ifdef MP-WEIXIN
+	params.mini = "wx"
+	// #endif
+	// #ifdef MP-ALIPAY
+	params.mini = "ali"
+	// #endif
+	// #ifdef MP-QQ
+	params.mini = "qq"
+	// #endif
+	// #ifdef MP-BAIDU
+	params.mini = "bd"
+	// #endif
 	let user_info = uni.getStorageSync('user_info');
 	let reqheader = {
 		'Content-Type': 'application/json',
@@ -48,8 +61,8 @@ export function request(url, params = {}, methods = "post", showLoading = true, 
 								flag = 0
 							}, 800)
 							reject(res)
-							return
 						}
+							return
 					}
 					uni.showToast({
 						title: str,
